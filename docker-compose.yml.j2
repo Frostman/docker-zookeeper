@@ -1,0 +1,13 @@
+{% for n in range(zk_server_count) %}
+zk_{{n + 1}}:
+    build: .
+    ports:
+        - "2888"
+        - "3888"
+        - "{{2181 + n}}:2181"
+    environment:
+        - data_dir=/var/lib/zookeeper
+        - zoo_id={{n + 1}}
+    volumes:
+        - {{zoo_cfg_file}}:/opt/zookeeper/conf/zoo.cfg
+{% endfor %}
